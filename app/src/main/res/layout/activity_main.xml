@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <!-- 下载路径 -->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/path"/>
+    <EditText
+        android:id="@+id/path"
+        android:text="http://music.baidu.com/cms/BaiduMusic-pcwebdownpagetest.apk"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    </EditText>
+
+    <!-- 下载按钮 -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/downloadbutton"
+        android:id="@+id/button"/>
+
+    <!-- 进度条 -->
+    <ProgressBar
+        android:layout_width="fill_parent"
+        android:layout_height="20dip"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/downloadbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/finfish_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.0M"
+            />
+        <TextView
+            android:id="@+id/total_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/0.0M"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/resultView" />
+</LinearLayout>
