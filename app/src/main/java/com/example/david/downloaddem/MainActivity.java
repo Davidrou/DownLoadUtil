@@ -3,20 +3,16 @@ package com.example.david.downloaddem;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar   ;
 import android.widget.TextView;
 
-import java.util.logging.Handler;
-
 public class MainActivity extends AppCompatActivity {
 
     private EditText downloadpathText;
-    private TextView resultView,totalSize,downloadSize;
+    private TextView resultView,totalSize,downloadSize,speedView;
     private ProgressBar progressBar;
     private android.os.Handler mHandler=new android.os.Handler(){
         @Override
@@ -25,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what){
                 case 1:
                     progressBar.setMax(msg.getData().getInt("size"));
-                    totalSize.setText("/"+revertBtoMB(msg.getData().getInt("size"))+"M");
+                    totalSize.setText("/"+Utils.revertBtoMB(msg.getData().getInt("size"))+"M");
                     break;
                 case 2:
                     progressBar.setProgress(msg.getData().getInt("size"));
-                    downloadSize.setText(revertBtoMB(msg.getData().getInt("size"))+"M");
-
+                    downloadSize.setText(Utils.revertBtoMB(msg.getData().getInt("size"))+"M");
+                    speedView.setText(""+msg.getData().getString("speed"));
                     break;
             }
         }
@@ -48,18 +44,14 @@ public class MainActivity extends AppCompatActivity {
         resultView = (TextView) this.findViewById(R.id.resultView);
         totalSize= (TextView) this.findViewById(R.id.total_size);
         downloadSize= (TextView) findViewById(R.id.finfish_size);
+        speedView= (TextView) findViewById(R.id.speed);
         Button button = (Button) this.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String path = downloadpathText.getText().toString();
-                new DownLoadThread(path,mHandler).start();
+                new DownLoadThread(path,mHandler,MainActivity.this).start();
             }
         });
     }
-
-    private String revertBtoMB(int B){
-        return String.format("%.2f",B/1024.0/1024.0);
-    }
-
 }

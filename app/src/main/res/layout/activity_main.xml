@@ -46,6 +46,14 @@
             android:text="/0.0M"
             />
 
+        <TextView
+            android:id="@+id/speed"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12kb/s"
+            />
+
     </LinearLayout>
     <TextView
         android:layout_width="fill_parent"
