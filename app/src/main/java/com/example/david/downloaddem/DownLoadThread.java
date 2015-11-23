@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +30,7 @@ public class DownLoadThread extends Thread {
     Timer timer;
     Context mContext;
     SharedPreferences preferences;
+    boolean stopFlag=false;
     DownLoadThread(String url,Handler mHandler,Context context){
         this.mHandler=mHandler;
         this.urlString=url;
@@ -56,8 +56,8 @@ public class DownLoadThread extends Thread {
                     if (!f.exists()) {
                         f.mkdir();
                     }
-                    String newFilename=getFileName(urlString);
-                    File file =new File(newFilename);
+                    String newFilename = getFileName(urlString);
+                    File file = new File(newFilename);
                     // 1K的数据缓冲
                     byte[] bs = new byte[1024];
                     // 读取到的数据长度
@@ -74,58 +74,86 @@ public class DownLoadThread extends Thread {
                     timer = new Timer();
                     timer.schedule(task, 1000, 2000); // 1s后启动任务，每2s执行一次
                     // 开始读取
-                    while ((len = is.read(bs)) != -1) {
+                    while ((len = is.read(bs)) != -1 && !isInterrupted()) {
+                        if (stopFlag) {
+                            timer.cancel();
+                            break;
+                        }
                         os.write(bs, 0, len);
                         upDateDownSizeRecord(len);
                     }
                     os.close();
                     is.close();
                 } else {
-                    System.out.println("网络错误");
+                    System.out.println("服务器错误");
+                    showNetError();
                 }
-            }else{//已经下载过进行断点续传
-                currentDownload=hasDownLoadLastTimeSize;
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("RANGE","bytes="+hasDownLoadLastTimeSize+"-");
-                contentLength=conn.getContentLength()+hasDownLoadLastTimeSize;
-                conn.connect();
-                if(conn.getResponseCode()==206) {
-                    showTotalSize();
-                    InputStream is = conn.getInputStream();
-                    //在SD卡进行存储
-                    String name = getFileName(urlString);
-                    RandomAccessFile storedFile = new RandomAccessFile(name, "rwd");
-                    storedFile.seek(hasDownLoadLastTimeSize);
-                    byte[] bs = new byte[1024];
-                    // 读取到的数据长度
-                    int len;
-                    // 输出的文件流
-                    timeLast = System.currentTimeMillis();
-                    lastDownload = hasDownLoadLastTimeSize;
-                    TimerTask task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            showSpeedAndDownloadedSize();
-                        }
-                    };
-                    timer = new Timer();
-                    timer.schedule(task, 1000, 2000); // 1s后启动任务，每2s执行一次
-                    // 开始读取
-                    while ((len = is.read(bs)) != -1) {
-                        storedFile.write(bs, 0, len);
-                        upDateDownSizeRecord(len);
+            } else {//已经下载过进行断点续传
+                if (new File(getFileName(urlString)).exists()) {
+                    currentDownload = hasDownLoadLastTimeSize;
+                    HttpURLConnection connForSize = (HttpURLConnection) url.openConnection();
+                    int totalSize = connForSize.getContentLength();
+                    connForSize.connect();
+                    if (totalSize == hasDownLoadLastTimeSize) {
+                        System.out.println("已经下载完成了");
+                        return;
                     }
-                    System.out.println("下载完成");
-                    // 完毕，关闭所有链接
-                    is.close();
-                    storedFile.close();
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    System.out.println("hasDownLoadLastTimeSize" + hasDownLoadLastTimeSize);
+                    conn.setRequestProperty("RANGE", "bytes=" + hasDownLoadLastTimeSize + "-");
+                    contentLength = conn.getContentLength() + hasDownLoadLastTimeSize;
+                    System.out.println("conn.getContentLength()" + conn.getContentLength());
+                    conn.connect();
+                    System.out.println("conn.getResponseCode():" + conn.getResponseCode());
+                    if (conn.getResponseCode() == 206) {
+                        showTotalSize();
+                        InputStream is = conn.getInputStream();
+                        //在SD卡进行存储
+                        String name = getFileName(urlString);
+                        RandomAccessFile storedFile = new RandomAccessFile(name, "rwd");
+                        storedFile.seek(hasDownLoadLastTimeSize);
+                        byte[] bs = new byte[1024];
+                        // 读取到的数据长度
+                        int len;
+                        // 输出的文件流
+                        timeLast = System.currentTimeMillis();
+                        lastDownload = hasDownLoadLastTimeSize;
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                showSpeedAndDownloadedSize();
+                            }
+                        };
+                        timer = new Timer();
+                        timer.schedule(task, 1000, 2000); // 1s后启动任务，每2s执行一次
+                        // 开始读取
+                        while ((len = is.read(bs)) != -1) {
+                            if (stopFlag) {
+                                timer.cancel();
+                                break;
+                            }
+                            storedFile.write(bs, 0, len);
+                            upDateDownSizeRecord(len);
+                        }
+                        System.out.println("下载完成");
+                        // 完毕，关闭所有链接
+                        is.close();
+                        storedFile.close();
+                    } else {
+                        showNetError();
+                        System.out.println("服务器异常");
+                    }
                 }else{
-                    System.out.println("网络错误");
+                    preferences.edit().putInt("urlString", 0).commit();
+                    run();
                 }
             }
         }catch(Exception e){
                 e.printStackTrace();
+                showNetError();
+            System.out.println("下载异常");
             }
+
     }
 
     /**
@@ -185,5 +213,18 @@ public class DownLoadThread extends Thread {
     private void upDateDownSizeRecord(int len){
         currentDownload += len;
         preferences.edit().putInt("urlString", currentDownload).commit();
+    }
+
+
+    /**
+     * 通知UI线程网络错误
+     */
+
+    private void showNetError(){
+        mHandler.sendEmptyMessage(3);
+    }
+
+    public void setStopFlag(boolean b){
+        this.stopFlag=b;
     }
 }

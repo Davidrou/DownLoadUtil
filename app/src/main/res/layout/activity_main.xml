@@ -16,12 +16,22 @@
         android:layout_height="wrap_content">
     </EditText>
 
-    <!-- 下载按钮 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-- 下载按钮 -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/downloadbutton"
         android:id="@+id/button"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂停"
+            android:id="@+id/pause"/>
+    </LinearLayout>
+
 
     <!-- 进度条 -->
     <ProgressBar
