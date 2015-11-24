@@ -6,39 +6,20 @@
 
     <!-- 下载路径 -->
     <TextView
+        android:id="@+id/fileName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/path"/>
-    <EditText
-        android:id="@+id/path"
-        android:text="http://music.baidu.com/cms/BaiduMusic-pcwebdownpagetest.apk"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-    </EditText>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <!-- 下载按钮 -->
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/downloadbutton"
-        android:id="@+id/button"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="暂停"
-            android:id="@+id/pause"/>
-    </LinearLayout>
-
-
+         />
     <!-- 进度条 -->
     <ProgressBar
         android:layout_width="fill_parent"
         android:layout_height="20dip"
         style="?android:attr/progressBarStyleHorizontal"
         android:id="@+id/downloadbar" />
+
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,9 +42,24 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12kb/s"
+            android:text="0kb/s"
             />
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-- 下载按钮 -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/downloadbutton"
+            android:id="@+id/download_button"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂停"
+            android:id="@+id/pause"/>
     </LinearLayout>
     <TextView
         android:layout_width="fill_parent"

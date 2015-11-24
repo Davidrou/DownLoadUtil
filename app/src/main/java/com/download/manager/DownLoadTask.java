@@ -1,4 +1,4 @@
-package com.example.david.downloaddem;
+package com.download.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,7 +21,7 @@ import java.util.TimerTask;
  * Created by david on 15/11/18.
  */
 
-public class DownLoadThread extends Thread {
+public class DownLoadTask implements Runnable {
     private final  String YOURFLODERNAME="MyDownload";
     String urlString;
     Handler mHandler;
@@ -31,7 +31,7 @@ public class DownLoadThread extends Thread {
     Context mContext;
     SharedPreferences preferences;
     boolean stopFlag=false;
-    DownLoadThread(String url,Handler mHandler,Context context){
+    public DownLoadTask(String url,Handler mHandler,Context context){
         this.mHandler=mHandler;
         this.urlString=url;
         this.mContext=context;
@@ -41,11 +41,12 @@ public class DownLoadThread extends Thread {
     public void run() {
         try {
             //上次下载的字节数
-            int hasDownLoadLastTimeSize = preferences.getInt("urlString", 0);
+            int hasDownLoadLastTimeSize = preferences.getInt(urlString, 0);
             URL url = new URL(this.urlString);
             if (hasDownLoadLastTimeSize == 0) {//没有下载过
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.connect();
+                conn.setRequestMethod("GET");
                 if (conn.getResponseCode() == 200) {
                     InputStream is = conn.getInputStream();
                     contentLength = conn.getContentLength();
@@ -74,7 +75,7 @@ public class DownLoadThread extends Thread {
                     timer = new Timer();
                     timer.schedule(task, 1000, 2000); // 1s后启动任务，每2s执行一次
                     // 开始读取
-                    while ((len = is.read(bs)) != -1 && !isInterrupted()) {
+                    while ((len = is.read(bs)) != -1 ) {
                         if (stopFlag) {
                             timer.cancel();
                             break;
@@ -144,7 +145,7 @@ public class DownLoadThread extends Thread {
                         System.out.println("服务器异常");
                     }
                 }else{
-                    preferences.edit().putInt("urlString", 0).commit();
+                    preferences.edit().putInt(urlString, 0).commit();
                     run();
                 }
             }
@@ -182,14 +183,14 @@ public class DownLoadThread extends Thread {
         msg.what = 2;
         Bundle b=new Bundle();
         b.putInt("size", currentDownload);
-        b.putString("speed", String.valueOf(speed) + " kb/s");
+        b.putLong("speed", speed);
         msg.setData(b);
         mHandler.sendMessage(msg);//更新界面
         if(currentDownload==contentLength){
             msg = mHandler.obtainMessage();
             msg.what = 2;
             b.putInt("size", currentDownload);
-            b.putString("speed", "0kb/s");
+            b.putLong("speed", speed);
             msg.setData(b);
             mHandler.sendMessage(msg);//更新界面
             timer.cancel();
@@ -212,7 +213,7 @@ public class DownLoadThread extends Thread {
      */
     private void upDateDownSizeRecord(int len){
         currentDownload += len;
-        preferences.edit().putInt("urlString", currentDownload).commit();
+        preferences.edit().putInt(urlString, currentDownload).commit();
     }
 
 

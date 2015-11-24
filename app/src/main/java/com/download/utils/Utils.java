@@ -1,4 +1,4 @@
-package com.example.david.downloaddem;
+package com.download.utils;
 
 /**
  * Created by david on 15/11/19.
