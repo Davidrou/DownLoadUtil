@@ -44,6 +44,14 @@
             android:layout_height="wrap_content"
             android:text="0kb/s"
             />
+        <TextView
+            android:id="@+id/textview_status"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:textColor="#123456"
+            />
 
     </LinearLayout>
     <LinearLayout

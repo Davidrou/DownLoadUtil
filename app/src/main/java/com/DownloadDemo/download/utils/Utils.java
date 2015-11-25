@@ -1,4 +1,4 @@
-package com.download.utils;
+package com.DownloadDemo.download.utils;
 
 /**
  * Created by david on 15/11/19.

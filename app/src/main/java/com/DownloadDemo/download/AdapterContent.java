@@ -1,4 +1,4 @@
-package com.example.david.downloaddem;
+package com.DownloadDemo.download;
 
 import android.content.Context;
 import android.os.Handler;
@@ -10,10 +10,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.download.manager.DownLoadManager;
-import com.download.manager.DownLoadTask;
-import com.download.manager.DownloadInfo;
-import com.download.utils.Utils;
+import com.DownloadDemo.download.manager.DownLoadManager;
+import com.DownloadDemo.download.manager.DownLoadTask;
+import com.DownloadDemo.download.manager.DownloadInfo;
+import com.DownloadDemo.download.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,7 @@ public class AdapterContent extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<DownloadInfo> list;
+    private Handler mHandler;
     public AdapterContent(Context mContext,ArrayList<DownloadInfo> list){
         this.mContext=mContext;
         this.list=list;
@@ -60,6 +61,7 @@ public class AdapterContent extends BaseAdapter {
             holder.downloadSize= (TextView) convertView.findViewById(R.id.finfish_size);
             holder.speedView= (TextView) convertView.findViewById(R.id.speed);
             holder.pauseButton= (Button) convertView.findViewById(R.id.pause);
+            holder.statusView= (TextView) convertView.findViewById(R.id.textview_status);
             convertView.setTag(holder);
         }else{
             holder= (ViewHolder) convertView.getTag();
@@ -70,7 +72,7 @@ public class AdapterContent extends BaseAdapter {
         holder.progressBar.setProgress(info.downloadSize);
         holder.speedView.setText(info.speed + "kb/s");
         holder.downloadSize.setText(Utils.revertBtoMB(info.downloadSize)+ "M/");
-        holder.totalSize.setText(Utils.revertBtoMB(info.totalSize)+"M");
+        holder.totalSize.setText(Utils.revertBtoMB(info.totalSize) + "M");
         holder.pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,18 +82,34 @@ public class AdapterContent extends BaseAdapter {
         holder.downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                info.downloadThrad=new DownLoadTask(info.urlString, info.mHandler, mContext);
+                info.downloadThrad=new DownLoadTask(info,mHandler, mContext);
                 DownLoadManager.with().submit(info.downloadThrad);
             }
         });
+        if(info.status==DownloadInfo.DOWNLOAD_STATUS_QUEUE){
+            holder.statusView.setText("排队中");
+            holder.progressBar.setVisibility(View.GONE);
+        }else if(info.status==DownloadInfo.DOWNLOAD_STATUS_PAUSE){
+            holder.statusView.setText("暂停中");
+            holder.progressBar.setVisibility(View.GONE);
+        }else if(info.status==DownloadInfo.DOWNLOAD_STATUS_DOWNLOADING){
+            holder.statusView.setText("下载中");
+            holder.progressBar.setVisibility(View.VISIBLE);
+        }else if(info.status==DownloadInfo.DOWNLOAD_STATUS_FINISH){
+            holder.statusView.setText("下载完成");
+            holder.progressBar.setVisibility(View.GONE);
+        }else {
+            holder.statusView.setText("");
+            holder.progressBar.setVisibility(View.GONE);
+        }
         return convertView;
     }
-
-
     class ViewHolder{
         Button downloadButton,pauseButton;
         ProgressBar progressBar;
-        TextView textViewFileName,totalSize,downloadSize,speedView;
+        TextView textViewFileName,totalSize,downloadSize,speedView,statusView;
     }
-
+   void setHandler(Handler mHandler){
+       this.mHandler=mHandler;
+   }
 }
