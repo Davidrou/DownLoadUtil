@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 底部按钮部分-->
+    <LinearLayout
+        android:id="@+id/play_bottom_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="赞"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="下载"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="评论"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="分享"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="更多"
+            />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 顶部部分-->
+            <RelativeLayout
+                android:id="@+id/play_top_rl"
+                android:layout_width="match_parent"
+                android:layout_height="490dp"
+                android:background="@drawable/tomorrow_back_bg"
+                android:paddingTop="20dp">
+
+                <RelativeLayout
+                    android:id="@+id/play_top_rl_top"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/ac_play_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/back_new_selector"
+                        />
+
+
+                    <ImageButton
+                        android:id="@+id/ac_play_alarm_clock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/alarm_colock_selector"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/ac_play_times_tv"
+                        android:drawableLeft="@drawable/play_times_white"
+                        android:layout_toLeftOf="@id/ac_play_alarm_clock"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#fff"
+                        android:text="3.2万"/>
+
+                    <TextView
+                        android:id="@+id/ac_play_title"
+                        android:layout_toLeftOf="@id/ac_play_times_tv"
+                        android:layout_toRightOf="@id/ac_play_back"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_centerInParent="true"
+                        android:layout_width="190dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:ellipsize="marquee"
+                        android:text="秦汉401 让太子位"
+                        android:textColor="#fff"
+                        android:textSize="18sp"
+
+                        android:layout_centerVertical="true"
+                        />
+
+
+                </RelativeLayout>
+
+                <!-- 专辑图片-->
+                <ImageView
+                    android:id="@+id/ac_play_album_icon"
+                    android:scaleType="fitXY"
+                    android:layout_centerInParent="true"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/ac_play_seekbar_rl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:id="@+id/a_play_nowtime_tv"
+                        android:text="00:00"
+                        android:layout_centerVertical="true"
+                        android:textColor="#fff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"/>
+
+                    <TextView
+                        android:id="@+id/a_play_totaltime_tv"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="00:00"
+                        android:textColor="#fff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"/>
+                    <SeekBar
+                        android:id="@+id/ac_play_seekbar"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_toRightOf="@id/a_play_nowtime_tv"
+                        android:layout_toLeftOf="@id/a_play_totaltime_tv"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </RelativeLayout>
+
+
+
+                <!-- 播放控制部分-->
+                <RelativeLayout
+                    android:layout_above="@id/ac_play_seekbar_rl"
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/ac_notify_play_ib"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/notify_play_selector"
+                        android:layout_centerInParent="true"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/ac_notify_next_ib"
+                        android:layout_toRightOf="@id/ac_notify_play_ib"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/notify_next_selector"
+                        android:layout_centerInParent="true"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/ac_notify_pre_ib"
+                        android:layout_toLeftOf="@id/ac_notify_play_ib"
+                        android:layout_marginRight="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/notify_pre_selector"
+                        android:layout_centerInParent="true"
+                        />
+
+                    <TextView
+                        android:id="@+id/ac_play_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="播放列表"
+                        android:drawablePadding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="#fff"
+                        android:drawableTop="@drawable/play_list_btn_selector"/>
+
+                    <TextView
+                        android:id="@+id/ac_play_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="播放历史"
+                        android:drawablePadding="5dp"
+                        android:textSize="12sp"
+                        android:textColor="#fff"
+                        android:drawableTop="@drawable/play_history_selector"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/play_center_rl"
+                android:layout_above="@id/play_bottom_ll"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#fff"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                >
+                <ImageView
+                    android:id="@+id/play_artist_cover"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    />
+                <TextView
+                    android:id="@+id/play_artist_name"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignTop="@id/play_artist_cover"
+                    android:layout_toRightOf="@id/play_artist_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="谢涛听世界"
+                    android:textColor="#000"/>
+                <TextView
+                    android:id="@+id/play_sub_detail"
+                    android:layout_toRightOf="@id/play_artist_cover"
+                    android:text="粉丝 2万"
+                    android:textSize="10sp"
+                    android:layout_below="@id/play_artist_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+                <TextView
+                    android:id="@+id/play_ablum_descrip"
+                    android:layout_toRightOf="@id/play_artist_cover"
+                    android:layout_alignBottom="@id/play_artist_cover"
+                    android:layout_width="200dp"
+                    android:text="以史为鉴、以史为鉴、以史为鉴..."
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:textSize="10sp"
+                    android:layout_height="wrap_content"
+                    />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关注"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
+
+            <TextView android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="继续拖动，查看更多"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

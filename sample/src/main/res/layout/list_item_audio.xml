@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/textview_audio_listitem_createtime"
+        android:id="@+id/textvie_audio_listitem_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:text="第一百七十三集 人情世故第一百七十三集 人情世故"/>
+    <TextView
+        android:layout_alignParentRight="true"
+        android:id="@+id/textview_audio_listitem_createtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3天前"/>
+    <TextView
+        android:layout_below="@+id/textvie_audio_listitem_title"
+        android:id="@+id/textvie_audio_listitem_playtimes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="5.8万"
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/bg_myitem_playtimes_new"/>
+    <TextView
+        android:layout_alignBaseline="@+id/textvie_audio_listitem_playtimes"
+        android:layout_toRightOf="@+id/textvie_audio_listitem_playtimes"
+        android:id="@+id/textvie_audio_listitem_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="45:56"
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/bg_myitem_alltime_new"/>
+    <TextView
+        android:layout_alignBaseline="@+id/textvie_audio_listitem_playtimes"
+        android:layout_toRightOf="@+id/textvie_audio_listitem_duration"
+        android:id="@+id/textvie_audio_listitem_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="165"
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/bg_myitem_comments_new"/>
+    <Button
+        android:layout_below="@+id/textview_audio_listitem_createtime"
+        android:id="@+id/button_audio_listitem_download"
+        android:layout_alignBottom="@+id/textvie_audio_listitem_playtimes"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下"/>
+
+
+
+
+
+
+</RelativeLayout>
+</LinearLayout>
