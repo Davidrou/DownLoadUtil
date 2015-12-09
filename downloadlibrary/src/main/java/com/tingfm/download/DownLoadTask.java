@@ -33,12 +33,21 @@ public class DownLoadTask implements Runnable {
     boolean stopFlag=false;
     private DownLoadStatusListener downloadStatuslistener;
     private DownloadInfo mDownloadInfo;
-    public DownLoadTask(DownloadInfo mInfo,Context context){
-        this.mDownloadInfo=mInfo;
-        this.urlString=mInfo.urlString;
-        this.mContext=context;
+
+    /**
+     *
+     * @param trackId 下载任务的ID
+     * @param title    下载文件的名字
+     * @param downloadUrl 下载文件的URL
+     * @param mContext    上下文对象
+     */
+    public DownLoadTask(int trackId, String title, String downloadUrl, Context mContext) {
+        this.mDownloadInfo=new DownloadInfo( trackId,  title,  downloadUrl,  mContext);
+        this.urlString=downloadUrl;
+        this.mContext=mContext;
         this.preferences=mContext.getSharedPreferences("DownLoadRecord",Context.MODE_PRIVATE);
     }
+
     @Override
     public void run() {
         mDownloadInfo.status=DownloadInfo.DOWNLOAD_STATUS_DOWNLOADING;

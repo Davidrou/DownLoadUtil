@@ -64,8 +64,9 @@ public class AudiolistAdapter extends BaseAdapter{
                     //Todo  下载点击
                     Asset info = (Asset) v.getTag();
                     /**下载器的入口 todo*/
-                    DownloadInfo downloadInfo = new DownloadInfo(info.trackId, mContext, info.title, info.downloadUrl);
-                    DownLoadManager.with().submit(new DownLoadTask(downloadInfo, mContext));
+
+                    DownLoadTask task=new DownLoadTask(info.trackId,info.title,info.downloadUrl,mContext);
+                    DownLoadManager.with().submit(task);
                 }
             });
 //            convertView.setOnClickListener(new View.OnClickListener() {

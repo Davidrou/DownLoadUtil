@@ -49,6 +49,10 @@ public class DownLoadManager implements DownLoadTask.DownLoadStatusListener  {
         return downloadThreadPool;
     }
 
+    /**
+     * 提交下载任务
+     * @param task
+     */
     public void submit(DownLoadTask task){
         //检查任务是否正在下载
         if(isDownloading(task)){
@@ -65,6 +69,11 @@ public class DownLoadManager implements DownLoadTask.DownLoadStatusListener  {
         task.getDownloadInfo().downloadThread=task;
         downloadingList.add(task.getDownloadInfo());
     }
+
+    /**
+     * 提交继续下载任务
+     * @param task
+     */
 
     public void submitFromContinue(DownLoadTask task){
         if(task.getDownloadInfo().status!=DownloadInfo.DOWNLOAD_STATUS_PAUSE){
@@ -128,22 +137,42 @@ public class DownLoadManager implements DownLoadTask.DownLoadStatusListener  {
         }
     }
 
+    /**
+     * 获取正在下载的列表
+     * @return
+     */
     public ArrayList<DownloadInfo> getDownloadingList(){
         return downloadingList;
     }
 
+    /**
+     * 继续下载任务
+     * @param info
+     */
     public void continueTask(DownloadInfo info) {
         submitFromContinue(info.downloadThread);
     }
 
+    /**
+     * 取消下载
+     * @param info
+     */
     public void cancleDownloading(DownloadInfo info){
         info.downloadThread.stopFlag=true;
         downloadingList.remove(info);
     }
+
+    /**
+     * 暂停下载
+     * @param info
+     */
     public void pauseDownloading(DownloadInfo info) {
         info.downloadThread.stopFlag=true;
     }
 
+    /**
+     * 关闭所有下载任务
+     */
     public void closeAllTask() {
         for(int i=0;i<downloadingList.size();i++){
             downloadingList.get(i).downloadThread.stopFlag=true;
@@ -154,6 +183,9 @@ public class DownLoadManager implements DownLoadTask.DownLoadStatusListener  {
 
     }
 
+    /**
+     * 下载进度刷新，状态改变的时候回调的接口
+     */
     public interface DownloadingChangeListener{
         void refreshData();
         void onHasDownloadingWarn();

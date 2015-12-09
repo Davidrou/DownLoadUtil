@@ -39,7 +39,15 @@ public class DownloadInfo {
     public long speed;
     public DownLoadTask downloadThread;
     public int status=this.DOWNLOAD_STATUS_NEW;
-    public DownloadInfo(int id,Context mContext,String fileName,String urlString){
+
+    /**
+     *
+     * @param id 下载任务的ID
+     * @param mContext
+     * @param fileName 下载存储的文件名
+     * @param urlString 下载的URL地址
+     */
+    public DownloadInfo(int id,String fileName,String urlString,Context mContext){
         this.id=id;
         this.fileName=fileName;
         this.urlString=urlString;
